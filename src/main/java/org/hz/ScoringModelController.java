@@ -7,6 +7,11 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.model.output.Response;
 
 @Path("/score")
@@ -26,5 +31,20 @@ public class ScoringModelController {
         Response<Double> response = scoringModel.score(dto.getAnswer(), dto.getQuestion());
         Double score = response.content();
         return score;
+    }
+
+    @POST
+    @Path("/all")
+    public List<Double> getScoreAll(ScoringModeDto dto) {
+        String pathToModel = config.path();
+        String pathToTokenizer = config.tokenizer();
+        OnnxScoringModel scoringModel = new OnnxScoringModel(pathToModel, pathToTokenizer);
+
+        List<TextSegment> segments = dto.getAnswers().stream()
+                .map(TextSegment::from)
+                .collect(Collectors.toList());
+        Response<List<Double>> response = scoringModel.scoreAll(segments, dto.getQuestion());
+        List<Double> scores = response.content();
+        return scores;
     }
 }
