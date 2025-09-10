@@ -20,15 +20,11 @@ import dev.langchain4j.model.output.Response;
 public class ScoringModelController {
 
     @Inject
-    ScoringConfig config;
+    OnnxScoringModel model;
 
     @POST
     public Double getScore(ScoringModeDto dto) {
-        String pathToModel = config.path();
-        String pathToTokenizer = config.tokenizer();
-        OnnxScoringModel scoringModel = new OnnxScoringModel(pathToModel, pathToTokenizer);
-
-        Response<Double> response = scoringModel.score(dto.getAnswer(), dto.getQuestion());
+        Response<Double> response = model.score(dto.getAnswer(), dto.getQuestion());
         Double score = response.content();
         return score;
     }
@@ -36,14 +32,10 @@ public class ScoringModelController {
     @POST
     @Path("/all")
     public List<Double> getScoreAll(ScoringModeDto dto) {
-        String pathToModel = config.path();
-        String pathToTokenizer = config.tokenizer();
-        OnnxScoringModel scoringModel = new OnnxScoringModel(pathToModel, pathToTokenizer);
-
         List<TextSegment> segments = dto.getAnswers().stream()
                 .map(TextSegment::from)
                 .collect(Collectors.toList());
-        Response<List<Double>> response = scoringModel.scoreAll(segments, dto.getQuestion());
+        Response<List<Double>> response = model.scoreAll(segments, dto.getQuestion());
         List<Double> scores = response.content();
         return scores;
     }
