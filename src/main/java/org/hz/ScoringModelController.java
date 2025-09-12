@@ -9,9 +9,6 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 
 import java.util.List;
-import java.util.stream.Collectors;
-
-import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.model.output.Response;
 
 @Path("/score")
