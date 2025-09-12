@@ -2,10 +2,14 @@ package org.hz;
 
 import java.util.List;
 
+import dev.langchain4j.data.segment.TextSegment;
+
 public class ScoringModeDto {
     private String question;
 
     private List<String> answers;
+
+    private List<TextSegment> textSegments;
 
     private String answer;
 
@@ -33,5 +37,12 @@ public class ScoringModeDto {
         this.answers = answers;
     }
 
-    
+    public List<TextSegment> getTextSegments() {
+        return textSegments;
+    }
+
+    public void setTextSegments(List<TextSegment> textSegments) {
+        this.textSegments = textSegments;
+    }
+
 }

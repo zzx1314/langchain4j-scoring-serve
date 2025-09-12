@@ -32,10 +32,7 @@ public class ScoringModelController {
     @POST
     @Path("/all")
     public List<Double> getScoreAll(ScoringModeDto dto) {
-        List<TextSegment> segments = dto.getAnswers().stream()
-                .map(TextSegment::from)
-                .collect(Collectors.toList());
-        Response<List<Double>> response = model.scoreAll(segments, dto.getQuestion());
+        Response<List<Double>> response = model.scoreAll(dto.getTextSegments(), dto.getQuestion());
         List<Double> scores = response.content();
         return scores;
     }
