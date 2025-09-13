@@ -1,4 +1,4 @@
-package org.hz;
+package org.hz.controller;
 
 import dev.langchain4j.model.scoring.onnx.OnnxScoringModel;
 import jakarta.inject.Inject;
@@ -9,6 +9,12 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
+import org.hz.dto.ScoringModeDto;
+
+import dev.langchain4j.data.document.Metadata;
+import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.model.output.Response;
 
 @Path("/score")
@@ -29,7 +35,13 @@ public class ScoringModelController {
     @POST
     @Path("/all")
     public List<Double> getScoreAll(ScoringModeDto dto) {
-        Response<List<Double>> response = model.scoreAll(dto.getTextSegments(), dto.getQuestion());
+        List<TextSegment> segments = dto.getTextSegments().stream().map(one -> {
+            Metadata metadata = new Metadata();
+            metadata.putAll(one.getMetadata());
+            TextSegment segment = new TextSegment(one.getText(), metadata);
+            return segment;
+        }).collect(Collectors.toList());
+        Response<List<Double>> response = model.scoreAll(segments, dto.getQuestion());
         List<Double> scores = response.content();
         return scores;
     }

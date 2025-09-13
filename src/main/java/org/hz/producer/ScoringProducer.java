@@ -1,4 +1,6 @@
-package org.hz;
+package org.hz.producer;
+
+import org.hz.config.ScoringConfig;
 
 import dev.langchain4j.model.scoring.onnx.OnnxScoringModel;
 import jakarta.enterprise.context.ApplicationScoped;

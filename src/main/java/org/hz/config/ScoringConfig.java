@@ -1,4 +1,4 @@
-package org.hz;
+package org.hz.config;
 
 import io.smallrye.config.ConfigMapping;
 

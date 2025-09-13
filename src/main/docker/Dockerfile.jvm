@@ -8,6 +8,7 @@
 # Then, build the image with:
 #
 # docker build -f src/main/docker/Dockerfile.jvm -t quarkus/langchain4j-scoring-serve-jvm .
+# docker save -o score.tar quarkus/langchain4j-scoring-serve-jvm:latest
 #
 # Then run the container using:
 #
